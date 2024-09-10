@@ -6,24 +6,24 @@
    - Membuat suatu repository Github yang baru terserah kita, saya pribadi bernama sunrisemart
    - Melakukan clone pada repository tersebut ke komputer
    - Membuat virtual environment dengan menjalankan command berikut :
-     python3 -m venv env
+         python3 -m venv env
    - Mengaktifkan virtual environment dengan command :
-     source env/bin/activate
+         source env/bin/activate
    - Mempersiapkan requirements dengan menambahkan isi dari berkas :
-      django
-      gunicorn
-      whitenoise
-      psycopg2-binary
-      requests
-      urllib3
+         django
+         gunicorn
+         whitenoise
+         psycopg2-binary
+         requests
+         urllib3
    - Meng-install requirements dengan pip :
-     Python3 -m pip install -r requirements.txt
+         Python3 -m pip install -r requirements.txt
    - Membuat proyek Django baru dengan command:
-        django-admin startproject sunrisemart 
+         django-admin startproject sunrisemart 
    - Menambahkan string pada ALLOWED_HOSTS di settings.py :
-        ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+         ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
    - Membuat aplikasi baru main dengan menggunakan command :
-        python3 manage.py startapp main
+         python3 manage.py startapp main
    - Menambahkan aplikasi ke INSTALLED_APPS pada file settings.py
    - Membuat direktori baru dengan nama templates pada direktori aplikasi main
    - Membuat file baru pada direktori templates tadi dengan berkas main.html yang nanti nya akan berguna untuk menampilkan data dari program sunrisemart :
@@ -67,9 +67,10 @@
 
 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
    ![image](https://github.com/user-attachments/assets/6bc71c44-23ec-438f-97f3-3d4da52cad0f)
+Diagram yang saya buat menjelaskan alur penanganan request dari client hingga menghasilkan output yang sesuai dengan keinginan client.
+Proses ini dimulai ketika user mengirimkan request melalui internet,saat mereka mengakses website dan mengirimkan permintaan HTTP ke server. Setelah permintaan diterima, web server memprosesnya dan meneruskannya ke aplikasi Django. Selanjutnya, Django memulai proses request-response dengan memeriksa file ⁠urls.py untuk mencocokkan URL yang diminta dengan pola URL yang telah terdaftar. Jika URL tersebut cocok, Django meneruskan permintaan view di views.py, dimana argumen-argumen dari request diekstraksi dan diteruskan ke view. View dilanjutkan dengan proses pada models.py untuk mengambil data yang relevan dari database. Setelah data berhasil diambil, data tersebut dikirim kembali ke view dan kemudian diteruskan ke template HTML untuk ditampilkan kepada user. Akhirnya, setelah template diisi dengan data yang sesuai, Django mengirimkan respons HTTP yang berisi HTML kembali ke user, sehingga hasil permintaan dapat dilihat di browser mereka.
 
-
-3. Jelaskan fungsi git dalam pengembangan perangkat lunak!
+4. Jelaskan fungsi git dalam pengembangan perangkat lunak!
    Git adalah sebuah sistem kontrol versi yang terdistribusi dan tentunya sangat penting dalam pengembangan perangkat lunak.
    Fungsi utama dari git itu sendiri adalah memungkinkan para pengembang untuk bekerja bersama-sama pada proyek yang sama tanpa khawatir
    akan merusak kode atau mencampurnya, sehingga dapat memfasilitasi kerja tim dan memungkinkan pengembang untuk berkolaborasi secara efisien.
