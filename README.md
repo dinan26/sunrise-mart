@@ -6,18 +6,18 @@
    - Membuat suatu repository Github yang baru terserah kita, saya pribadi bernama sunrisemart
    - Melakukan clone pada repository tersebut ke komputer
    - Membuat virtual environment dengan menjalankan command berikut :
-        python3 -m venv env
+     python3 -m venv env
    - Mengaktifkan virtual environment dengan command :
-        source env/bin/activate
+     source env/bin/activate
    - Mempersiapkan requirements dengan menambahkan isi dari berkas :
-         django
-         gunicorn
-         whitenoise
-         psycopg2-binary
-         requests
-         urllib3
+      django
+      gunicorn
+      whitenoise
+      psycopg2-binary
+      requests
+      urllib3
    - Meng-install requirements dengan pip :
-        Python3 -m pip install -r requirements.txt
+     Python3 -m pip install -r requirements.txt
    - Membuat proyek Django baru dengan command:
         django-admin startproject sunrisemart 
    - Menambahkan string pada ALLOWED_HOSTS di settings.py :
