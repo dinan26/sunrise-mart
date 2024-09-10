@@ -3,37 +3,37 @@
 - Kelas : PBP C
 
 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-   1. Membuat suatu repository Github yang baru terserah kita, saya pribadi bernama sunrisemart
-   2. Melakukan clone pada repository tersebut ke komputer
-   3. Membuat virtual environment dengan menjalankan command berikut :
+   - Membuat suatu repository Github yang baru terserah kita, saya pribadi bernama sunrisemart
+   - Melakukan clone pada repository tersebut ke komputer
+   - Membuat virtual environment dengan menjalankan command berikut :
         python3 -m venv env
-   4. Mengaktifkan virtual environment dengan command :
+   - Mengaktifkan virtual environment dengan command :
         source env/bin/activate
-   5. Mempersiapkan requirements dengan menambahkan isi dari berkas :
+   - Mempersiapkan requirements dengan menambahkan isi dari berkas :
          django
          gunicorn
          whitenoise
          psycopg2-binary
          requests
          urllib3
-   6. Meng-install requirements dengan pip :
+   - Meng-install requirements dengan pip :
         Python3 -m pip install -r requirements.txt
-   7. Membuat proyek Django baru dengan command:
-     django-admin startproject sunrisemart 
-   8. Menambahkan string pada ALLOWED_HOSTS di settings.py :
+   - Membuat proyek Django baru dengan command:
+        django-admin startproject sunrisemart 
+   - Menambahkan string pada ALLOWED_HOSTS di settings.py :
         ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-   9. Membuat aplikasi baru main dengan menggunakan command :
+   - Membuat aplikasi baru main dengan menggunakan command :
         python3 manage.py startapp main
-   10. Menambahkan aplikasi ke INSTALLED_APPS pada file settings.py
-   11. Membuat direktori baru dengan nama templates pada direktori aplikasi main
-   12. Membuat file baru pada direktori templates tadi dengan berkas main.html yang nanti nya akan berguna untuk menampilkan data dari program sunrisemart :
+   - Menambahkan aplikasi ke INSTALLED_APPS pada file settings.py
+   - Membuat direktori baru dengan nama templates pada direktori aplikasi main
+   - Membuat file baru pada direktori templates tadi dengan berkas main.html yang nanti nya akan berguna untuk menampilkan data dari program sunrisemart :
          <h1>{{ app_name }} Page</h1>
    
          <h5>Name: </h5>
          <p>{{ name }}<p>
          <h5>Class: </h5>
          <p>{{ class }}<p>
-   13. Mengubah berkas models.py :
+   - Mengubah berkas models.py :
          from django.db import models
    
          class Product(models.Model):
@@ -42,7 +42,7 @@
             description = models.TextField()
             stock = models.IntegerField()
             rating = models.DecimalField(max_digits= 3, decimal_places=2, null= True, blank= True)
-   14. Menambahkan fungsi untuk me-render main pada file views.py:
+   - Menambahkan fungsi untuk me-render main pada file views.py:
          from django.shortcuts import render
    
          def show_main(request):
@@ -52,7 +52,7 @@
                'class': 'PBP C'
             }
             return render(request, "main.html", context)
-   15. Melakukan routing di file urls.py yang terdapat pada direktori sunrisemart, dengan isi file urls.py menjadi :
+   - Melakukan routing di file urls.py yang terdapat pada direktori sunrisemart, dengan isi file urls.py menjadi :
          from django.contrib import admin
          from django.urls import path, include
    
@@ -60,10 +60,10 @@
             path('admin/', admin.site.urls),
             path('', include('main.urls')),
          ]
-   16. Melakukan test dengan command :
+   - Melakukan test dengan command :
          python3 manage.py runserver
          kemudian membuka http://localhost:8000/ di safari
-   17. Deployment ke PWS
+   - Deployment ke PWS
 
 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
    ![image](https://github.com/user-attachments/assets/6bc71c44-23ec-438f-97f3-3d4da52cad0f)
