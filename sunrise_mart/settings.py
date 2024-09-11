@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-cd&g_hor5@dkwz9^$mlfma1n-tpvw)b#t3gom-*kvc=ut2m0l1
 DEBUG = True
 
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "dinda-dinanti-sunrisemart.pbp.cs.ui.ac.id"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
