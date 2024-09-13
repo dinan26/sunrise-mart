@@ -2,6 +2,8 @@
 - NPM : 2306245440
 - Kelas : PBP C
 
+Berikut link pws yang sudah berhasil di deploy https://pbp.cs.ui.ac.id/web/project/dinda.dinanti/sunrisemart
+
 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
    - Membuat suatu repository Github yang baru terserah kita, saya pribadi bernama sunrisemart
    - Melakukan clone pada repository tersebut ke komputer
