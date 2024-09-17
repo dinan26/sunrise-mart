@@ -1,8 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>{{ app_name }} SunriseMart</h1>
 
 <h5>NPM: </h5>
 <p>{{ npm }}<p>
-<h5>Name: </h5>
-<p>{{ name }}<p>
-<h5>Class: </h5>
-<p>{{ class }}<p>
+
+<h5>Name:</h5>
+<p>{{ name }}</p>
+
+<h5>Class:</h5>
+<p>{{ class }}</p>
+
+{% if not products %}
+    <p>Belum ada data produk pada sunrise mart.</p>
+    {% else %}
+    <style>
+      table {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 0 10px; /* Menambah jarak vertikal antar baris */
+      }
+      th, td {
+          padding: 10px 15px; /* Menambah ruang dalam sel */
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+      th {
+          background-color: #f2f2f2;
+          font-weight: bold;
+      }
+      .nama{ width: 25%; }
+      .deskripsi{ width: 15%; }
+      .stock { width: 20%; }
+      .harga{ width: 15%; }
+      
+    </style>
+
+    <table>
+      <tr>
+        <th class="nama">Nama</th>
+        <th class="deskripsi">Deskripsi</th>
+        <th class="stock">Stock</th>
+        <th class="harga">Harga</th>
+      </tr> 
+      {% for product in products %}
+      <tr>
+        <td class="nama">{{ product.nama }}</td>
+        <td class="deskripsi">{{ product.deskripsi }}</td>
+        <td class="stock">{{ product.stock }}</td>
+        <td class="harga">{{ product.harga }}</td>
+      </tr>
+  
+      {% endfor %} 
+    </table>
+    {% endif %}
+
+    <br />
+
+    <a href="{% url 'main:create_page' %}">
+      <button>Add New Product</button>
+    </a>
+{% endblock content %}
+ 
