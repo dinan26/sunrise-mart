@@ -356,6 +356,245 @@ aman sangat penting untuk melindungi privasi dan keamanan data pengguna.
 
 **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
 
+**1. Membuat Fungsi Register**
+
+- Tambahkan import baru pada file views.py
+    ```
+   from django.contrib.auth.forms import UserCreationForm
+   from django.contrib import messages
+    ```
+- Buat fungsi baru di views.py dengan nama register
+    ```
+   def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+    ```
+- Buat file HTML baru dengan nama register.html
+   
+     ```{% extends 'base.html' %}
+        {% block meta %}
+        <title>Register</title>
+        {% endblock meta %}
+        
+        {% block content %}
+        
+        <div class="login">
+          <h1>Register</h1>
+        
+          <form method="POST">
+            {% csrf_token %}
+            <table>
+              {{ form.as_table }}
+              <tr>
+                <td></td>
+                <td><input type="submit" name="submit" value="Daftar" /></td>
+              </tr>
+            </table>
+          </form>
+        
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        
+        {% endblock content %}
+     ```
+
+- Lakukan import pada file urls.py yang ada pada subdirektori main
+      ```
+   from main.views import register
+      ```
+
+   Tambahkan path url ke dalam urlpatterns untuk mengakses fungsi yang sudah diimpor tadi:
+    ```
+    urlpatterns = [
+     ...
+     path('register/', register, name='register'),
+     ]
+    ```
+
+**2. Membuat Fungsi Login**
+
+- Tambahkan import baru pada file views.py kembali
+    ```
+  from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+  from django.contrib.auth import authenticate, login
+    ```
+- Buat fungsi baru di views.py dengan nama register :
+    ```
+  def login_user(request):
+   if request.method == 'POST':
+      form = AuthenticationForm(data=request.POST)
+
+      if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
+
+   else:
+      form = AuthenticationForm(request)
+   context = {'form': form}
+   return render(request, 'login.html', context)
+    ```
+- Buat file HTML baru dengan nama login.html
+    ```{% extends 'base.html' %}
+        
+        {% block meta %}
+        <title>Login</title>
+        {% endblock meta %}
+        
+        {% block content %}
+        <div class="login">
+          <h1>Login</h1>
+        
+          <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+              {{ form.as_table }}
+              <tr>
+                <td></td>
+                <td><input class="btn login_btn" type="submit" value="Login" /></td>
+              </tr>
+            </table>
+          </form>
+        
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} Don't have an account yet?
+          <a href="{% url 'main:register' %}">Register Now</a>
+        </div>
+        
+        {% endblock content %}
+    ```
+
+- Lakukan import pada file urls.py yang ada pada subdirektori main
+    ```
+   from main.views import login_user
+    ```
+   Tambahkan path url ke dalam urlpatterns untuk mengakses fungsi yang sudah diimpor tadi:
+      ```
+    urlpatterns = [
+     path('login/', login_user, name='login'),
+ ]
+      ```
+  
+**3. Membuat Fungsi Logout**
+- Lakukan import pada views.py
+- Tambahkan fungsi di bawah ini ke dalam fungsi views.py
+    ```
+  def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+    ```
+- Tambahkan kode pada berkas main.html
+    ```
+  <a href="{% url 'main:logout' %}">
+    <button>Logout</button>
+  </a>
+    ```
+- Pada urls.py tambahkan kode:
+  ```
+  from main.views import logout_user
+  ```
+  dan
+    ```
+  urlpatterns = [
+   path('logout/', logout_user, name='logout'),
+  ]
+    ```
+    
+**4. Merestriksi Akses Halaman Main**
+- Lakukan import pada views.py
+- Tambahkan potongan kode 
+  ```
+  @login_required(login_url='/login') di atas fungsi show_main
+  ```
+- Jalankan proyek Django-mu dengan perintah python manage.py runserver dan bukalah http://localhost:8000/
+
+**5. Menggunakan Data Dari Cookies**
+- Buka kembali views.py yang ada pada subdirektori main. Tambahkan import HttpResponseRedirect, reverse, dan datetime pada bagian paling atas.
+- Pada fungsi login_user tambahkan cookie yang bernama last_login untuk melihat kapan terakhir kali pengguna melakukan login.
+  Ganti kode yang ada pada blok if form.is_valid() menjadi potongan kode berikut:
+    ```
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main"))
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ```
+- Pada fungsi show_main, tambahkan potongan kode
+  ```
+  'last_login': request.COOKIES['last_login']
+  ```
+- Ubah fungsi logout_user mennjadi :
+  ```
+  def logout_user(request):
+    logout(request)
+    response = HttpResponseRedirect(reverse('main:login'))
+    response.delete_cookie('last_login')
+    return response
+  ```
+- Tambahkan kode berikut pada main.html
+   ```
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+   ```
+- Silakan refresh halaman login (atau jalankan proyek Django-mu dengan perintah python manage.py runserver 
+
+**6. Menghubungkan product dengan user**
+- Tambahkan import baru pada models.py
+    ```
+    from django.contrib.auth.models import User
+    ```
+- Untuk menghubungkan model dengan user kita harus menambahkan model baru bernama user menggunakan foreign key
+    ```
+   user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ```
+- Ubah potongan kode pada fungsi create_page dalam subdirektori views.py
+    ```
+  def create_page(request):
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        page = form.save(commit=False)
+        page.user = request.user
+        form.save()
+        # page.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_page.html", context)
+    ```
+- Ubah value pada fungsi show_main
+    ```
+  def show_main(request):
+    products =  Product.objects.filter(user=request.user)
+    ```
+- Simpan semua perubahan, dan lakukan migrasi model dengan python manage.py makemigrations
+- Lakukan python manage.py migrate
+- tambahkan sebuah import baru pada settings.py yang ada pada subdirektori sunrise_mart
+  import os
+- Kemudian, ganti variabel DEBUG dari berkas settings.py menjadi :
+  PRODUCTION = os.getenv("PRODUCTION", False)
+  DEBUG = not PRODUCTION
+- Jalankan proyek Django-mu dengan perintah python manage.py runserver dan bukalah http://localhost:8000/ 
+
 
 
 
