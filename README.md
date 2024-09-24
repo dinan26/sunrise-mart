@@ -271,14 +271,53 @@ Proses ini dimulai ketika user mengirimkan request melalui internet,saat mereka 
 **4. POSTMAN JSON By ID**
    <img width="1440" alt="Screenshot 2024-09-18 at 05 52 01" src="https://github.com/user-attachments/assets/e9a09213-bb44-45ca-b128-82c426e6e491">
 
+<details>
+  <summary>TUGAS 3</summary>
+  
+**TUGAS INDIVIDU 3**
+
+**1. Apa perbedaan antara HttpResponseRedirect() dan redirect() ?**
+      HttpResponseRedirect dan redirect adalah dua alat dalam Django yang digunakan untuk melakukan pengalihan (redirect), namun keduanya memiliki perbedaan tertentu. 
+      Dari segi fungsi dan penggunaan, **HttpResponseRedirect** merupakan kelas yang mengembalikan respons HTTP dengan status kode 302 (Found), yang menandakan bahwa halaman yang       diminta telah dipindahkan ke lokasi lain. Untuk menggunakannya, Anda perlu menginstansiasi kelas ini dan memasukkan URL tujuan ke dalam konstruktornya. Sementara itu,             **redirect** adalah sebuah fungsi yang merupakan jalan pintas (shortcut) dari HttpResponseRedirect. Fungsi ini lebih sederhana digunakan karena tidak memerlukan instansiasi       kelas secara manual, cukup dengan menyertakan URL tujuan di dalam fungsinya. 
+      Dari segi sintaks, **HttpResponseRedirect** ditulis sebagai HttpResponseRedirect('/path/to/new/location'), sedangkan **redirect** lebih ringkas dengan penulisan         redirect('/path/to/new/location'). Dalam hal kemudahan, **redirect** lebih praktis karena sintaksnya lebih sederhana dan intuitif, sehingga lebih sesuai untuk penggunaan sehari-hari dalam pengembangan aplikasi Django.
+
+**2. Jelaskan cara kerja penghubungan model Product dengan User!**
+
+
+
+
+**3. Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? 
+     Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.**
+ 
+Perbedaan antara Autentikasi dan Otorisasi
+Autentikasi:
+Proses untuk memastikan identitas pengguna. Ini melibatkan pengecekan kredensial seperti username dan password untuk memastikan bahwa pengguna tersebut adalah orang yang mereka klaim.
+Contoh: Ketika pengguna masuk ke aplikasi dengan memasukkan username dan password, sistem akan memverifikasi informasi tersebut untuk memastikan kebenarannya.
+
+Otorisasi:
+Proses untuk menentukan hak akses bagi pengguna yang telah terautentikasi. Ini mengatur apa yang dapat dan tidak dapat diakses oleh pengguna di dalam sistem.
+Contoh: Setelah berhasil melakukan login, sistem akan memeriksa apakah pengguna memiliki izin untuk mengakses halaman tertentu atau melakukan tindakan tertentu, seperti menambah atau menghapus data.
+
+Proses Login Pengguna
+Ketika pengguna melakukan login, langkah-langkah berikut akan terjadi:
+Pengguna memasukkan kredensial: Username dan password dimasukkan ke dalam formulir login.
+Verifikasi identitas (Autentikasi):
+Sistem menggunakan fungsi authenticate() untuk mengecek apakah kredensial yang dimasukkan valid.
+Jika valid, pengguna dianggap terautentikasi, dan informasi pengguna disimpan dalam objek request.user.
+Menetapkan sesi: Jika autentikasi berhasil, Django akan membuat sesi untuk pengguna tersebut dan mengirimkan ID sesi sebagai cookie ke browser pengguna.
+Pemeriksaan hak akses (Otorisasi):
+Setelah proses autentikasi, sistem memeriksa izin pengguna dengan menggunakan fungsi seperti has_perm() untuk menentukan apa saja yang dapat diakses oleh pengguna.
+Implementasi di Django
+Django menyediakan mekanisme bawaan untuk menangani kedua proses ini:
+Autentikasi:
+Menggunakan middleware autentikasi untuk memeriksa status login pengguna.
+Fungsi seperti authenticate() dan login() digunakan untuk mengelola proses autentikasi.
 
 
 
 
 
-
-
-
+</details>
    
 
    
