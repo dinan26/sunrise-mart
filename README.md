@@ -270,49 +270,91 @@ Proses ini dimulai ketika user mengirimkan request melalui internet,saat mereka 
 
 **4. POSTMAN JSON By ID**
    <img width="1440" alt="Screenshot 2024-09-18 at 05 52 01" src="https://github.com/user-attachments/assets/e9a09213-bb44-45ca-b128-82c426e6e491">
+</details>
+
 
 <details>
-  <summary>TUGAS 3</summary>
+  <summary>TUGAS 4</summary>
   
-**TUGAS INDIVIDU 3**
+**TUGAS INDIVIDU 4**
 
 **1. Apa perbedaan antara HttpResponseRedirect() dan redirect() ?**
+
       HttpResponseRedirect dan redirect adalah dua alat dalam Django yang digunakan untuk melakukan pengalihan (redirect), namun keduanya memiliki perbedaan tertentu. 
       Dari segi fungsi dan penggunaan, **HttpResponseRedirect** merupakan kelas yang mengembalikan respons HTTP dengan status kode 302 (Found), yang menandakan bahwa halaman yang       diminta telah dipindahkan ke lokasi lain. Untuk menggunakannya, Anda perlu menginstansiasi kelas ini dan memasukkan URL tujuan ke dalam konstruktornya. Sementara itu,             **redirect** adalah sebuah fungsi yang merupakan jalan pintas (shortcut) dari HttpResponseRedirect. Fungsi ini lebih sederhana digunakan karena tidak memerlukan instansiasi       kelas secara manual, cukup dengan menyertakan URL tujuan di dalam fungsinya. 
       Dari segi sintaks, **HttpResponseRedirect** ditulis sebagai HttpResponseRedirect('/path/to/new/location'), sedangkan **redirect** lebih ringkas dengan penulisan         redirect('/path/to/new/location'). Dalam hal kemudahan, **redirect** lebih praktis karena sintaksnya lebih sederhana dan intuitif, sehingga lebih sesuai untuk penggunaan sehari-hari dalam pengembangan aplikasi Django.
 
 **2. Jelaskan cara kerja penghubungan model Product dengan User!**
 
+Menggunakan ForeignKey yang nantinya akan mengizinkan setiap produk terhubung dengan satu pengguna. Hal ini memungkinkan pengguna dapat memiliki banyak produk dan dapat dengan mudah mengakses produk-produk tersebut. Biasanya kita melakukan pada file berikut :
 
+      from django.db import models
+      from django.contrib.auth.models import User
+      
+      class Product(models.Model):
+          name = models.CharField(max_length=100)
+          description = models.TextField()
+          price = models.DecimalField(max_digits=10, decimal_places=2)
+          user = models.ForeignKey(User, on_delete=models.CASCADE)
+      
+          def __str__(self):
+              return self.name
 
 
 **3. Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? 
      Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.**
- 
-Perbedaan antara Autentikasi dan Otorisasi
-Autentikasi:
-Proses untuk memastikan identitas pengguna. Ini melibatkan pengecekan kredensial seperti username dan password untuk memastikan bahwa pengguna tersebut adalah orang yang mereka klaim.
-Contoh: Ketika pengguna masuk ke aplikasi dengan memasukkan username dan password, sistem akan memverifikasi informasi tersebut untuk memastikan kebenarannya.
 
-Otorisasi:
-Proses untuk menentukan hak akses bagi pengguna yang telah terautentikasi. Ini mengatur apa yang dapat dan tidak dapat diakses oleh pengguna di dalam sistem.
-Contoh: Setelah berhasil melakukan login, sistem akan memeriksa apakah pengguna memiliki izin untuk mengakses halaman tertentu atau melakukan tindakan tertentu, seperti menambah atau menghapus data.
+  **Authentication**: Proses verifikasi identitas pengguna. Ini biasanya dilakukan dengan memeriksa kredensial seperti username dan password.
+  Dalam Django, authentication ditangani oleh sistem authentication bawaan yang memverifikasi kredensial pengguna melalui model User. Jika kredensial benar, Django membuat  pengguna yang valid, menyimpan informasi pengguna, dan memungkinkan mereka mengakses sistem.
 
-Proses Login Pengguna
-Ketika pengguna melakukan login, langkah-langkah berikut akan terjadi:
-Pengguna memasukkan kredensial: Username dan password dimasukkan ke dalam formulir login.
-Verifikasi identitas (Autentikasi):
-Sistem menggunakan fungsi authenticate() untuk mengecek apakah kredensial yang dimasukkan valid.
-Jika valid, pengguna dianggap terautentikasi, dan informasi pengguna disimpan dalam objek request.user.
-Menetapkan sesi: Jika autentikasi berhasil, Django akan membuat sesi untuk pengguna tersebut dan mengirimkan ID sesi sebagai cookie ke browser pengguna.
-Pemeriksaan hak akses (Otorisasi):
-Setelah proses autentikasi, sistem memeriksa izin pengguna dengan menggunakan fungsi seperti has_perm() untuk menentukan apa saja yang dapat diakses oleh pengguna.
-Implementasi di Django
-Django menyediakan mekanisme bawaan untuk menangani kedua proses ini:
-Autentikasi:
-Menggunakan middleware autentikasi untuk memeriksa status login pengguna.
-Fungsi seperti authenticate() dan login() digunakan untuk mengelola proses autentikasi.
+**Authorization**: Proses menentukan apakah pengguna yang telah terautentikasi memiliki izin untuk mengakses sumber daya tertentu.
+  Django menyediakan sistem otorisasi berbasis izin (permissions) yang melekat pada pengguna dan grup pengguna. Anda bisa mengatur aturan izin untuk model atau tampilan (views) tertentu.
 
+**Proses Login :**
+Ketika pengguna login, Django akan memverifikasi kredensial pengguna (authentication). Jika kredensial benar, sesi login dibuat dan pengguna diberi akses ke sistem. Setelah itu, untuk setiap tindakan atau halaman, Django akan memeriksa apakah pengguna memiliki izin yang sesuai (authorization) untuk melakukan tindakan atau mengakses halaman tersebut
+
+**Implementasi Authentication dan Authorization di Django**
+
+**Authentication**: Django menyediakan sistem autentikasi bawaan yang mencakup model ⁠ User ⁠, form login, dan middleware untuk mengelola sesi pengguna.
+
+     
+    from django.contrib.auth import authenticate, login
+  
+    def my_view(request):
+        user = authenticate(username='john', password='secret')
+        if user is not None:
+            login(request, user)
+     ⁠ 
+**Authorization**: Django menggunakan izin (permissions) dan grup (groups) untuk mengelola akses pengguna.
+
+    ⁠ 
+    from django.contrib.auth.decorators import permission_required
+  
+    @permission_required('app_label.permission_code')
+    def my_view(request):
+        # View code here
+   
+Jadi karena adanya modul django.contrib.auth, Django menyediakan sistem authentication yang detail,
+dan memungkinkan pengembang dengan mudah mengelola authentication.
+
+**4. Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?**
+
+Django menggunakan sesi (sessions) dan cookies untuk mengingat pengguna yang telah login. Saat pengguna login, 
+Django membuat sesi baru dan menyimpan ID sesi di cookie pengguna. Setiap kali pengguna membuat permintaan baru, 
+cookie ini dikirim kembali ke server, memungkinkan Django untuk mengidentifikasi pengguna.
+
+Selain untuk melacak sesi pengguna yang login, cookies memiliki berbagai fungsi lain, seperti menyimpan preferensi pengguna 
+(seperti bahasa), melacak aktivitas pengguna untuk keperluan analitik, serta menyimpan informasi otentikasi agar pengguna 
+tetap login untuk jangka waktu yang lebih lama. Cookies juga sering digunakan untuk menampilkan iklan yang disesuaikan dengan perilaku
+browsing pengguna. 
+
+Namun, tidak semua cookies aman. Cookies dapat rentan jika menyimpan informasi sensitif dalam bentuk teks biasa,
+atau jika digunakan di jaringan yang tidak aman, yang membuatnya rentan terhadap serangan.Untuk meningkatkan keamanan, 
+Django dan aplikasi web lainnya biasanya menerapkan langkah-langkah seperti menambahkan flag **Secure**, sehingga cookies hanya
+dikirim melalui koneksi HTTPS, menggunakan flag **HttpOnly** agar JavaScript tidak bisa mengakses cookies,Pengelolaan cookies yang
+aman sangat penting untuk melindungi privasi dan keamanan data pengguna.
+
+**5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
 
 
 
