@@ -595,10 +595,109 @@ aman sangat penting untuk melindungi privasi dan keamanan data pengguna.
   DEBUG = not PRODUCTION
 - Jalankan proyek Django-mu dengan perintah python manage.py runserver dan bukalah http://localhost:8000/ 
 
+</details>
 
+<details>
+  <summary>TUGAS 5</summary>
+
+  **TUGAS INDIVIDU 5**
+
+  **1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!**
+
+  CSS menentukan prioritas penerapan gaya berdasarkan beberapa faktor. Urutan prioritas pertama adalah aturan dengan !important , 
+  yang akan selalu diutamakan jika ada. Setelah itu, gaya inline yang ditulis langsung pada elemen HTML (misalnya, melalui atribut style="... )
+  memiliki prioritas tertinggi. Di bawahnya, selektor ID (#id) diambil terlebih dahulu dibandingkan yang lain. Selektor kelas (.class), atribut ([attribute]),
+  dan pseudo-class (:hover, :focus, dll.) memiliki prioritas berikutnya. Setelah itu, selektor elemen seperti div, p, atau h1, serta pseudo-elemen (::before, ::after) diprioritaskan. Universal selector (*) memiliki spesifisitas terendah. Jika terdapat dua atau lebih aturan dengan spesifisitas yang sama, aturan yang terakhir dideklarasikan akan diambil.
+
+  **2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!**
+
+  Responsive design menjadi konsep penting dalam pengembangan aplikasi web karena beberapa alasan utama yang berkaitan dengan pengalaman pengguna,
+  aksesibilitas, dan SEO. Pertama, responsive design memastikan bahwa konten dapat diakses dengan nyaman di berbagai perangkat, baik itu desktop, 
+  tablet, maupun smartphone. Ini mengurangi kebutuhan untuk menggulir atau memperbesar halaman, sehingga pengguna dapat menavigasi situs dengan mudah. 
+  Selain itu, desain responsif juga meningkatkan aksesibilitas karena semakin banyak pengguna yang mengakses internet melalui perangkat mobile. Hal ini 
+  penting untuk meningkatkan interaksi dan keterlibatan pengguna.
+  
+Selain itu, Google memberikan peringkat lebih tinggi kepada situs web yang responsif karena mereka menawarkan pengalaman pengguna yang lebih baik. Ini berarti 
+bahwa penerapan responsive design dapat membantu meningkatkan visibilitas dan peringkat situs di hasil pencarian. Dengan demikian, situs web yang responsif 
+tidak hanya lebih mudah digunakan oleh pengguna, tetapi juga lebih mudah ditemukan oleh mesin pencari.Mengembangkan satu versi situs web yang responsif juga 
+lebih efisien dibandingkan dengan membuat versi terpisah untuk desktop dan mobile. Ini mengurangi biaya pemeliharaan dan waktu pengembangan. 
+
+**3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!**
+
+**Margin** adalah ruang yang berada di luar batas (border) elemen. Fungsinya adalah untuk memberikan jarak antara elemen tersebut dengan elemen lain di sekitarnya. 
+Margin dapat diatur menggunakan properti seperti `margin-top`, `margin-right`, `margin-bottom`, dan `margin-left`. Untuk menerapkan margin, kita dapat menggunakan 
+sintaks berikut:
+```css
+selector {
+    margin: 20px; /* Margin di semua sisi */
+    margin-top: 10px; /* Margin hanya di atas */
+    margin: 10px 20px; /* Margin atas/bawah 10px, kiri/kanan 20px */
+}
+```
+
+**Border** adalah garis yang mengelilingi elemen dan terletak di antara padding dan margin. Border dapat disesuaikan dalam hal ketebalan, jenis garis, dan warna. 
+Implementasinya dilakukan dengan menggunakan properti seperti `border-width`, `border-style`, dan `border-color`. Contoh penerapan border adalah sebagai berikut:
+```css
+selector {
+    border: 2px solid black; /* Border dengan ketebalan 2px, jenis solid, warna hitam */
+}
+```
+
+**Padding** adalah ruang yang berada di dalam elemen, antara konten dan batas (border) elemen tersebut. Padding berfungsi untuk memberikan ruang tambahan di sekitar 
+konten sehingga tidak menempel langsung pada batas elemen. Padding dapat diatur dengan cara yang mirip dengan margin, menggunakan properti seperti `padding-top`, 
+`padding-right`, `padding-bottom`, dan `padding-left`. Berikut adalah contoh penerapan padding:
+```css
+selector {
+    padding: 15px; /* Padding di semua sisi */
+    padding-top: 10px; /* Padding hanya di atas */
+    padding: 10px 20px; /* Padding atas/bawah 10px, kiri/kanan 20px */
+}
+```
+Secara ringkas, margin mengatur jarak antar elemen, border memberikan batas visual pada elemen, dan padding menciptakan ruang di dalam elemen itu sendiri. Memahami 
+perbedaan ini sangat penting untuk menciptakan tata letak yang rapi dan fungsional dalam desain web.
+
+**4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!**
+
+**- Flexbox**
+
+**Konsep**: Flexbox, atau Flexible Box Layout, adalah model tata letak satu dimensi yang memungkinkan elemen dalam sebuah kontainer diatur dalam baris atau kolom.
+Dengan menggunakan flexbox, elemen dapat secara otomatis menyesuaikan ukuran mereka untuk mengisi ruang yang tersedia, baik dengan memperluas maupun menyusut.
+Ini sangat berguna untuk membuat tata letak responsif yang dapat beradaptasi dengan berbagai ukuran layar.
+
+**Kegunaan**:
+- Memudahkan penataan elemen dalam satu baris atau kolom.
+- Memungkinkan untuk melakukan penyelarasan vertikal dan horizontal dengan mudah.
+- Mengatasi masalah kolom dengan tinggi yang berbeda, sehingga semua kolom dapat memiliki tinggi yang sama.
+- Sangat cocok untuk membuat menu navigasi, tombol, dan komponen UI lainnya yang memerlukan penataan sederhana.
+
+**Implementasi**: Untuk menggunakan flexbox, kita perlu menetapkan properti `display` pada elemen kontainer menjadi `flex`. Contoh implementasi:
+```css
+.container {
+    display: flex;
+    justify-content: center; /* Menyelaraskan item secara horizontal */
+    align-items: center; /* Menyelaraskan item secara vertikal */
+}
+```
+
+**- Grid Layout**
+
+**Konsep**: CSS Grid Layout adalah model tata letak dua dimensi yang memungkinkan pengaturan elemen dalam baris dan kolom secara bersamaan. Dengan grid, 
+kita dapat membuat struktur kompleks dengan lebih mudah dibandingkan dengan teknik lain seperti float atau positioning.
+
+**Kegunaan**:
+- Memungkinkan desain tata letak yang lebih kompleks dengan kontrol penuh atas baris dan kolom.
+- Sangat berguna untuk membuat layout halaman penuh, seperti grid foto, dashboard, atau layout berbasis kartu.
+- Dapat mengatur ruang antar elemen dengan lebih efektif dan fleksibel.
+
+**Implementasi**: Untuk menggunakan grid layout, kita juga perlu menetapkan properti `display` pada elemen kontainer menjadi `grid`. Contoh implementasi:
+```css
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Membuat 3 kolom dengan lebar yang sama */
+    gap: 10px; /* Jarak antar item grid */
+}
+```
+**5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!**
 
 
 </details>
-   
-
-   
