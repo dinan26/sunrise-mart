@@ -1,71 +1,88 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Sunrise Florist</title>
+{% endblock meta %}
 {% block content %}
-<h1>{{ app_name }} SunriseMart</h1>
-
-<h5>NPM: </h5>
-<p>{{ npm }}<p>
-
-<h5>Name:</h5>
-<p>{{ name }}</p>
-
-<h5>Class:</h5>
-<p>{{ class }}</p>
-
-{% if not products %}
-    <p>Belum ada data produk pada sunrise mart.</p>
-    {% else %}
-    <style>
-      table {
-          width: 100%;
-          border-collapse: separate;
-          border-spacing: 0 10px; /* Menambah jarak vertikal antar baris */
-      }
-      th, td {
-          padding: 10px 15px; /* Menambah ruang dalam sel */
-          text-align: left;
-          border-bottom: 1px solid #ddd;
-      }
-      th {
-          background-color: #f2f2f2;
-          font-weight: bold;
-      }
-      .nama{ width: 25%; }
-      .deskripsi{ width: 15%; }
-      .stock { width: 20%; }
-      .harga{ width: 15%; }
-      
-    </style>
-
-    <table>
-      <tr>
-        <th class="nama">Nama</th>
-        <th class="deskripsi">Deskripsi</th>
-        <th class="stock">Stock</th>
-        <th class="harga">Harga</th>
-      </tr> 
-      {% for product in products %}
-      <tr>
-        <td class="nama">{{ product.nama }}</td>
-        <td class="deskripsi">{{ product.deskripsi }}</td>
-        <td class="stock">{{ product.stock }}</td>
-        <td class="harga">{{ product.harga }}</td>
-      </tr>
+{% include 'navbar.html' %}
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#FFF9D0] flex flex-col"> <!-- Background dengan warna pastel kuning -->
+  <div class="p-2 mb-6 relative">
+    <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+      {% include "card_info.html" with title='𝐍𝐏𝐌' value=npm %}
+      {% include "card_info.html" with title='𝐍𝐚𝐦𝐞' value=name %}
+      {% include "card_info.html" with title='𝐂𝐥𝐚𝐬𝐬' value=class %}
+    </div>
+    <div class="w-full px-6 absolute top-[44px] left-0 z-20 hidden md:flex">
+      <div class="w-full min-h-4 bg-[#FFF9D0]"> <!-- Garis warna pastel kuning -->
+      </div>
+    </div>
+    <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex ">
+      <div class="h-full min-w-4 bg-[#FFF9D0] mx-auto"> <!-- Garis warna pastel kuning -->
+      </div>
+    </div>
+  </div>
   
-      {% endfor %} 
-    </table>
-    {% endif %}
+  <div class="flex justify-end mb-6">
+      <a href="{% url 'main:create_page' %}" class="bg-[#FFF9D0] hover:bg-yellow-200 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+          Add New Product
+      </a>
+  </div>
 
-    <br />
-
-    <a href="{% url 'main:create_page' %}">
-      <button>Add New Product</button>
-    </a>
-
-    <a href="{% url 'main:logout' %}">
-      <button>Logout</button>
-    </a>
-
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-
+  {% if not products %}
+    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+      <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+      <p class="text-center text-gray-600 mt-4">Belum ada produk pada sunrise florist.</p>
+    </div>
+  {% else %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for product in products %}
+        <div class="p-4 rounded-lg shadow-md" style="background: linear-gradient(135deg, #FAEED1, #FFD78A);">
+          <h3 class="font-bold text-xl text-gray-800 mb-2">{{ product.nama }}</h3>
+          <p class="text-gray-600">{{ product.harga }} IDR</p>
+          <!-- Tambahan Deskripsi -->
+          <div class="mt-4">
+            <p class="text-gray-800 font-semibold mb-2">Deskripsi</p>
+            <p class="text-gray-700 break-words overflow-hidden" style="max-height: 5rem; word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; overflow-y: auto;">
+              {{ product.deskripsi }}
+            </p>
+          </div>
+          <!-- Tambahan Stok -->
+          <div class="mt-4">
+            <p class="text-gray-800 font-semibold mb-2">Stok</p>
+            <div class="relative pt-1">
+              <div class="flex mb-2 items-center justify-between">
+                <div>
+                  <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-gray-800 bg-[#FAEED1]">
+                    {% if product.stock > 10 %}10+{% else %}{{ product.stock }}{% endif %}
+                  </span>
+                </div>
+              </div>
+              <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-[#FAEED1]">
+                <div style="width:{% if product.stock > 10 %}100%{% else %}{{ product.stock }}0%{% endif %}" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-yellow-500"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Tombol Edit dan Hapus -->
+          <div class="flex justify-between items-center mt-4">
+            <a href="{% url 'main:edit_product' product.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg px-4 py-2">
+              Edit
+            </a>
+            <a href="{% url 'main:delete_product' product.id %}" class="bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-2">
+              Hapus
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  <!-- Last Login dipindahkan ke bawah halaman dan diberi font-bold -->
+  <div class="px-3 mt-6">
+      <div class="flex rounded-md items-center bg-[#FFF9D0] py-2 px-4 w-fit mx-auto"> <!-- Background warna kuning pastel -->
+        <h1 class="text-gray-800 text-center font-bold">Last Login: {{last_login}}</h1> <!-- Teks dibuat tebal dengan font-bold -->
+      </div>
+  </div>
+  
+</div>
 {% endblock content %}
- 
