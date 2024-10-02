@@ -699,5 +699,536 @@ kita dapat membuat struktur kompleks dengan lebih mudah dibandingkan dengan tekn
 ```
 **5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!**
 
+**1. Menambahkan Tailwind ke aplikasi**
+kita perlu menambahkan script cdn tailwind di bagian head
+
+``` <script src="https://cdn.tailwindcss.com"> ```
+
+**2. Menambahkan fitur edit product di aplikasi**
+- Pada views.py buatlah fungsi baru bernama edit_product 
+```def edit_product(request, id):
+    # Get product entry berdasarkan id
+    product = Product.objects.get(pk = id)
+
+    # Set product entry sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+```
+- Buatlah berkas HTML baru dengan nama edit_product.html pada subdirektori templates
+    ``` {% extends 'base.html' %}
+  
+        {% load static %}
+        
+        {% block content %}
+        
+        <h1>Edit Product</h1>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Edit Mood"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% endblock %}
+  ```
+  - Pada subdirektori urls.py tambahkan import dan path url
+  
+  - Menambahkan tombol edit pada main.html
+    ```
+      <td>
+          <a href="{% url 'main:edit_product' product.id %}">
+              <button>
+                  Edit
+              </button>
+          </a>
+      </td>
+    ```
+
+**2. Menambahkan fitur delete product di aplikasi**
+  - Pada views.py buatlah fungsi baru bernama edit_product 
+```def delete_product(request, id):
+    # Get product berdasarkan id
+    product = Product.objects.get(pk = id)
+    # Hapus product
+    product.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
+```
+- Menambahkan tombol delete pada subdirektori templates
+  ``` <td>
+        <a href="{% url 'main:edit_mood' mood_entry.pk %}">
+            <button>
+                Edit
+            </button>
+        </a>
+    </td>
+    <td>
+        <a href="{% url 'main:delete_mood' mood_entry.pk %}">
+            <button>
+                Delete
+            </button>
+        </a>
+    </td>
+  ```
+  - Pada subdirektori urls.py tambahkan import dan path url
+
+**3. Menambahkan Navbar pada Aplikasi**
+
+- Buat berkas HTML dengan nama navbar.html di folder utama
+  ```
+    <nav class="shadow-lg fixed top-0 left-0 z-40 w-full" style="background-color: #FFEEAD;">
+    <div class="px-4 sm:px-2 lg:px-2"> <!-- Mengurangi padding horizontal -->
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <h1 class="text-4xl font-bold text-gray-800">𝐒𝐮𝐧𝐫𝐢𝐬𝐞 𝐅𝐥𝐨𝐫𝐢𝐬𝐭 💐</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+              <a href="{% url 'main:show_main' %}" class="text-xl font-bold text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg transition duration-300 bg-opacity-50 hover:bg-yellow-300">
+                  𝐇𝐨𝐦𝐞
+              </a>
+              <a href="{% url 'main:create_page' %}" class="text-xl font-bold text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg transition duration-300 bg-opacity-50 hover:bg-yellow-300">
+                  𝐂𝐫𝐞𝐚𝐭𝐞 𝐏𝐫𝐨𝐝𝐮𝐜𝐭
+              </a>
+              {% if user.is_authenticated %}
+                <span class="text-xl font-bold text-gray-700">𝐖𝐞𝐥𝐜𝐨𝐦𝐞, {{ user.username }}</span>
+                <a href="{% url 'main:logout' %}" 
+                  class="text-xl font-bold text-center bg-[#FFEEAD] hover:bg-yellow-300 text-gray-800 font-bold py-2 px-4 rounded transition duration-300 shadow-md hover:shadow-lg">
+                    𝐋𝐨𝐠𝐨𝐮𝐭
+                </a>
+              {% else %}
+                  <a href="{% url 'main:login' %}" class="text-xl font-bold text-center bg-blue-300 hover:bg-blue-400 text-gray-800 py-2 px-4 rounded transition duration-300">
+                      𝐋𝐨𝐠𝐢𝐧
+                  </a>
+                  <a href="{% url 'main:register' %}" class="text-xl font-bold text-center bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded transition duration-300">
+                      𝐑𝐞𝐠𝐢𝐬𝐭𝐞𝐫
+                  </a>
+       
+          </div>
+          
+                    </a>
+                {% endif %}
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div class="mobile-menu hidden md:hidden px-4 w-full">
+        <div class="pt-2 pb-3 space-y-1 mx-auto" style="background-color: #FFEEAD;">
+            <a href="{% url 'main:show_main' %}" class="block text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg transition duration-300">
+                Home
+            </a>
+            <a href="{% url 'main:create_page' %}" class="block text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg transition duration-300">
+                Create Item
+            </a>
+            {% if user.is_authenticated %}
+                <span class="block text-gray-700 px-4 py-2">Welcome, {{ user.username }}</span>
+                <a href="{% url 'main:logout' %}" class="block text-center bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-300">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{% url 'main:login' %}" class="block text-center bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-300 mb-2">
+                    Login
+                </a>
+                <a href="{% url 'main:register' %}" class="block text-center bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-300">
+                    Register
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        const btn = document.querySelector("button.mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+  
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+    </script>
+  </nav>
+
+  ```
+
+**4. Konfigurasi Static Files pada Aplikasi**
+  - Pada settings.py, tambahkan middleware WhiteNoise
+    
+    ```whitenoise.middleware.WhiteNoiseMiddleware,```
+      
+    
+  - Pada settings.py, pastikan variabel STATIC_ROOT, STATICFILES_DIRS, dan STATIC_URL seperti:
+  
+``` STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
+ ```
+    
+**5. Menghubungkan global.css dan script Tailwind ke base.html serta Menambahkan custom styling ke global.css**
+
+**6. Styling Halaman Login**
+     Karena saya memilih warna kuning soft jadi saya mengatur warna untuk background nya
+  ```
+     {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
+    
+    {% block content %}
+    <div class="min-h-screen flex items-center justify-center w-screen bg-[#FFF9D0] py-12 px-4 sm:px-6 lg:px-8"> <!-- Mengubah bg-gray-100 menjadi bg-[#FFF9D0] -->
+      <div class="max-w-md w-full space-y-8">
+        <div>
+          <h2 class="mt-6 text-center text-black text-3xl font-extrabold">
+            Login to your account
+          </h2>
+        </div>
+        <form class="mt-8 space-y-6" method="POST" action="">
+          {% csrf_token %}
+          <input type="hidden" name="remember" value="true">
+          <div class="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label for="username" class="sr-only">Username</label>
+              <input id="username" name="username" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm" placeholder="Username"> <!-- Fokus kuning -->
+            </div>
+            <div>
+              <label for="password" class="sr-only">Password</label>
+              <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm" placeholder="Password"> <!-- Fokus kuning -->
+            </div>
+          </div>
+    
+          <div>
+            <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
+              Sign in <!-- Tombol dengan warna kuning -->
+            </button>
+          </div>
+        </form>
+    
+        {% if messages %}
+        <div class="mt-4">
+          {% for message in messages %}
+          {% if message.tags == "success" %}
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% elif message.tags == "error" %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% else %}
+                <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+    
+        <div class="text-center mt-4">
+          <p class="text-sm text-black">
+            Don't have an account yet?
+            <a href="{% url 'main:register' %}" class="font-medium text-yellow-500 hover:text-yellow-600">
+              Register Now <!-- Warna kuning untuk teks tautan -->
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endblock content %}
+```
+
+**7. Styling Halaman Register**
+  ```
+      {% extends 'base.html' %}
+      {% load static %}
+      
+      {% block meta %}
+      <title>Register</title>
+      {% endblock meta %}
+      
+      {% block content %}
+      <div class="min-h-screen flex items-center justify-center bg-[#FFF9D0] py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 form-style">
+          <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-black">
+              Create your account
+            </h2>
+          </div>
+          <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="remember" value="true">
+            <div class="rounded-md shadow-sm -space-y-px">
+              {% for field in form %}
+                <div class="{% if not forloop.first %}mt-4{% endif %}">
+                  <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-black">
+                    {{ field.label }}
+                  </label>
+                  <div class="relative">
+                    {{ field }}
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      {% if field.errors %}
+                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% if field.errors %}
+                    {% for error in field.errors %}
+                      <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+      
+            <div>
+              <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none">
+                Register
+              </button>
+            </div>
+          </form>
+      
+          <div class="text-center mt-4">
+            <p class="text-sm text-black">
+              Already have an account?
+              <a href="{% url 'main:login' %}" class="font-medium text-yellow-600 hover:text-yellow-700">
+                Login here
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tambahkan CSS untuk memastikan bayangan ungu dihilangkan -->
+      <style>
+        input:focus {
+          outline: none !important; /* Menghilangkan outline dengan prioritas tinggi */
+          box-shadow: none !important; /* Menghilangkan bayangan dengan prioritas tinggi */
+          border-color: #000; /* Ganti border menjadi hitam atau warna lain yang diinginkan */
+        }
+      </style>
+      {% endblock content %}
+  ```
+
+**8. Styling Halalaman Home** 
+  - Menambahkan background kuning pastel dan mengganti font
+  ```
+    {% extends 'base.html' %}
+    {% load static %}
+    
+    {% block meta %}
+    <title>Sunrise Florist</title>
+    {% endblock meta %}
+    {% block content %}
+    {% include 'navbar.html' %}
+    <div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#FFF9D0] flex flex-col"> <!-- Background dengan warna pastel kuning -->
+      <div class="p-2 mb-6 relative">
+        <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+          {% include "card_info.html" with title='𝐍𝐏𝐌' value=npm %}
+          {% include "card_info.html" with title='𝐍𝐚𝐦𝐞' value=name %}
+          {% include "card_info.html" with title='𝐂𝐥𝐚𝐬𝐬' value=class %}
+        </div>
+        <div class="w-full px-6 absolute top-[44px] left-0 z-20 hidden md:flex">
+          <div class="w-full min-h-4 bg-[#FFF9D0]"> <!-- Garis warna pastel kuning -->
+          </div>
+        </div>
+        <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex ">
+          <div class="h-full min-w-4 bg-[#FFF9D0] mx-auto"> <!-- Garis warna pastel kuning -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-end mb-6">
+          <a href="{% url 'main:create_page' %}" class="bg-[#FFF9D0] hover:bg-yellow-200 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+              Add New Product
+          </a>
+      </div>
+    
+      {% if not products %}
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+          <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+          <p class="text-center text-gray-600 mt-4">Belum ada produk pada sunrise florist.</p>
+        </div>
+      {% else %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for product in products %}
+            <div class="p-4 rounded-lg shadow-md" style="background: linear-gradient(135deg, #FAEED1, #FFD78A);">
+              <h3 class="font-bold text-xl text-gray-800 mb-2">{{ product.nama }}</h3>
+              <p class="text-gray-600">{{ product.harga }} IDR</p>
+              <!-- Tambahan Deskripsi -->
+              <div class="mt-4">
+                <p class="text-gray-800 font-semibold mb-2">Deskripsi</p>
+                <p class="text-gray-700 break-words overflow-hidden" style="max-height: 5rem; word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; overflow-y: auto;">
+                  {{ product.deskripsi }}
+                </p>
+              </div>
+              <!-- Tambahan Stok -->
+              <div class="mt-4">
+                <p class="text-gray-800 font-semibold mb-2">Stok</p>
+                <div class="relative pt-1">
+                  <div class="flex mb-2 items-center justify-between">
+                    <div>
+                      <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-gray-800 bg-[#FAEED1]">
+                        {% if product.stock > 10 %}10+{% else %}{{ product.stock }}{% endif %}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-[#FAEED1]">
+                    <div style="width:{% if product.stock > 10 %}100%{% else %}{{ product.stock }}0%{% endif %}" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-yellow-500"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Tombol Edit dan Hapus -->
+              <div class="flex justify-between items-center mt-4">
+                <a href="{% url 'main:edit_product' product.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg px-4 py-2">
+                  Edit
+                </a>
+                <a href="{% url 'main:delete_product' product.id %}" class="bg-red-500 hover:bg-red-600 text-white rounded-lg px-4 py-2">
+                  Hapus
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <!-- Last Login dipindahkan ke bawah halaman dan diberi font-bold -->
+      <div class="px-3 mt-6">
+          <div class="flex rounded-md items-center bg-[#FFF9D0] py-2 px-4 w-fit mx-auto"> <!-- Background warna kuning pastel -->
+            <h1 class="text-gray-800 text-center font-bold">Last Login: {{last_login}}</h1> <!-- Teks dibuat tebal dengan font-bold -->
+          </div>
+      </div>
+      
+    </div>
+    {% endblock content %}
+ ```
+  
+  - Buat file card_product.html di directory templates
+```
+    <div class="relative break-inside-avoid">
+      <div class="absolute top-2 z-10 left-1/2 -translate-x-1/2 flex items-center -space-x-2">
+        <div class="w-[3rem] h-8 bg-gray-200 rounded-md opacity-80 -rotate-90"></div>
+        <div class="w-[3rem] h-8 bg-gray-200 rounded-md opacity-80 -rotate-90"></div>
+      </div>
+      <div class="relative top-5 bg-[#F2EFE5] shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col border-2 border-yellow-300 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+        <div class="bg-[#F2EFE5] text-gray-800 p-4 rounded-t-lg border-b-2 border-yellow-300">
+          <h3 class="font-bold text-xl mb-2">{{ product.nama }}</h3> <!-- Nama produk -->
+          <p class="text-gray-600">{{ product.harga }} IDR</p> <!-- Harga produk -->
+        </div>
+        <div class="p-4">
+          <p class="font-semibold text-lg mb-2">Deskripsi</p> 
+          <p class="text-gray-700 mb-2">{{ product.deskripsi }}</p> <!-- Deskripsi produk -->
+          <div class="mt-4">
+            <p class="text-gray-700 font-semibold mb-2">Stok</p>
+            <div class="relative pt-1">
+              <div class="flex mb-2 items-center justify-between">
+                <div>
+                  <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-gray-800 bg-[#F2EFE5]">
+                    {% if product.stock > 10 %}10+{% else %}{{ product.stock }}{% endif %}
+                  </span>
+                </div>
+              </div>
+              <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-[#F2EFE5]">
+                <div style="width:{% if product.stock > 10 %}100%{% else %}{{ product.stock }}0%{% endif %}" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-yellow-500"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute top-0 -right-4 flex space-x-1">
+        <a href="{% url 'main:edit_product' product.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+          </svg>
+        </a>
+        <a href="{% url 'main:delete_product' product.id %}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
+```
+  
+  - Buat file card_info.html di directory templates
+```
+   <div class="bg-[#F1EEDC] rounded-xl overflow-hidden border-2 border-yellow-500">
+    <div class="p-4 animate-shine">
+      <h5 class="text-lg font-semibold text-gray-800">{{ title }}</h5> <!-- Warna teks tetap gelap agar kontras -->
+      <p class="text-gray-900">{{ value }}</p> <!-- Teks abu-abu gelap untuk memberikan kontras yang baik -->
+    </div>
+  </div>
+```
+
+  - Ubah berkas create_product.html pada subdirektori templates
+ ``` {% extends 'base.html' %}
+      {% load static %}
+      {% block meta %}
+      <title>Create Product</title>
+      {% endblock meta %}
+      
+      {% block content %}
+      {% include 'navbar.html' %}
+      
+      <div class="flex flex-col min-h-screen bg-[#FFF9D0]"> 
+        <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
+          <h1 class="text-3xl font-bold text-center mb-8 text-black">Create Product</h1>
+        
+          <div class="bg-[#FAEED1] shadow-md rounded-lg p-6 form-style">
+            <form method="POST" class="space-y-6">
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="flex flex-col">
+                  <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
+                    {{ field.label }}
+                  </label>
+                  <div class="w-full">
+                    {{ field }}
+                  </div>
+                  {% if field.help_text %}
+                    <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+              <div class="flex justify-center mt-6">
+                <button type="submit" class="bg-yellow-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-yellow-600 transition duration-300 ease-in-out w-full">
+                  Create Product
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      {% endblock %}
+```
+
+
+    
 
 </details>
