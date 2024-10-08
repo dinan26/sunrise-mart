@@ -12,15 +12,16 @@ from main.forms import ProductForm
 from main.models import Product
 from django.http import HttpResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.html import strip_tags
 
 @login_required(login_url='/login')
 def show_main(request):
-    products =  Product.objects.filter(user=request.user)
     context = {
         'npm' : '2306245440',
         'name': request.user.username,
         'class': 'PBP C',
-        'products': products,
         'last_login': request.COOKIES['last_login'],
     }
 
@@ -63,11 +64,11 @@ def delete_product(request, id):
     return HttpResponseRedirect(reverse('main:show_main'))
 
 def show_xml(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
@@ -101,6 +102,8 @@ def login_user(request):
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
             # return redirect('main:show_main')
+      else:
+           messages.error(request, "Invalid username or password. Please try again.")
 
    else:
       form = AuthenticationForm(request)
@@ -112,3 +115,23 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+
+@csrf_exempt
+@require_POST
+def add_product_ajax(request):
+    nama = strip_tags(request.POST.get("nama")) 
+    deskripsi = strip_tags(request.POST.get("deskripsi")) 
+    stock = strip_tags(request.POST.get("stock"))
+    harga = strip_tags(request.POST.get("harga"))
+    user= request.user
+
+    new_product = Product (
+        nama=nama, deskripsi=deskripsi,
+        stock=stock, harga=harga,
+        user=user
+    )
+    new_product.save()
+
+    return HttpResponse(b"CREATED", status=201)
+    
