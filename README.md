@@ -1237,34 +1237,32 @@ kita perlu menambahkan script cdn tailwind di bagian head
   **TUGAS INDIVIDU 6**
 
   
-**1. Manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web sangat signifikan. Beberapa di antaranya adalah:**
-
-**Keunggulan Penggunaan JavaScript dalam Pengembangan Website**
+**1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!**
 
 JavaScript adalah bahasa pemrograman yang sangat fleksibel dan banyak digunakan dalam pengembangan web. Berikut beberapa keunggulan dari penggunaan JavaScript dalam pembuatan dan pengembangan website:
 
-**1. Interaktivitas Tinggi**
+**- Interaktivitas Tinggi**
 JavaScript memungkinkan pembuatan tampilan dinamis pada sebuah website. Contohnya, membuat efek animasi, dropdown menus, slideshow, dan fitur-fitur lain yang memudahkan pengguna dalam berinteraksi dengan halaman web.
 
-**2. Validasi Formulir dan Input**
+**- Validasi Formulir dan Input**
 JavaScript dapat digunakan untuk memvalidasi formulir di website. Ini memastikan bahwa pengguna telah memasukkan data yang benar dan lengkap sebelum mengirimkan formulir, meningkatkan keakuratan data yang diterima.
 
-**3. Animasi dan Efek Visual**
+**- Animasi dan Efek Visual**
 JavaScript sangat efektif dalam membuat animasi dan efek visual menarik pada halaman web. Contohnya adalah slideshow, menu drop-down, animasi tombol, dan efek hover, yang meningkatkan daya tarik visual situs.
 
-**4. Manipulasi HTML dan CSS**
+**- Manipulasi HTML dan CSS**
 JavaScript memungkinkan pengembang untuk mengakses dan memanipulasi struktur halaman web melalui DOM (Document Object Model). Ini memungkinkan pengembang untuk menambahkan, menghapus, atau mengubah elemen-elemen HTML dan CSS secara dinamis, memberikan fleksibilitas tinggi dalam pengembangan.
 
-**5. Respons Instan Terhadap Aksi Pengguna**
+**- Respons Instan Terhadap Aksi Pengguna**
 Dengan JavaScript, pengembang dapat memberikan respons instan kepada pengguna setelah mereka melakukan aksi tertentu, seperti mengklik tombol atau mengisi formulir. Hal ini secara signifikan meningkatkan pengalaman pengguna di situs web.
 
-**6. Integrasi dengan Framework dan Library**
+**- Integrasi dengan Framework dan Library**
 JavaScript memiliki banyak framework dan library yang membantu mempercepat dan mempermudah proses pengembangan aplikasi web. Framework seperti React, Angular, dan Vue.js memungkinkan pengembangan aplikasi web secara cepat dan efisien.
 
-**7. Kecepatan Loading Website**
+**- Kecepatan Loading Website**
 Kecepatan loading website adalah faktor penting dalam peringkat SEO. Penggunaan JavaScript yang optimal dapat membantu meningkatkan performa loading website, yang berpengaruh pada peringkat website di mesin pencari seperti Google.
 
-**8. Fleksibilitas Penerapan**
+**- Fleksibilitas Penerapan**
 Walaupun awalnya digunakan di frontend, implementasi JavaScript telah berkembang ke backend dengan adanya Node.js. Hal ini memungkinkan pengembang untuk mengelola server dan database menggunakan JavaScript, memberikan fleksibilitas penuh dalam pengembangan aplikasi web.
 
 
@@ -1289,47 +1287,224 @@ Jika kita tidak menggunakan `await`, kita harus menggunakan `.then()` untuk mena
 
 Penggunaan decorator `csrf_exempt` pada view yang akan digunakan untuk AJAX POST sangat penting dalam konteks keamanan aplikasi web yang dibangun dengan Django. Berikut adalah alasan-alasan mengapa kita perlu menggunakan decorator ini dan apa yang terjadi jika kita tidak menggunakannya.
 
-**Alasan Menggunakan `csrf_exempt`**
+**Alasan Menggunakan `csrf_exempt` :**
 
-**1. Menghindari Pengecekan CSRF**
+**- Menghindari Pengecekan CSRF**
+
    Dekorator `csrf_exempt` menandai view tertentu agar tidak diperiksa oleh middleware CSRF. Ini berguna ketika kita melakukan permintaan POST melalui AJAX, di mana pengiriman token CSRF mungkin tidak selalu dilakukan atau sulit untuk diatur dalam konteks JavaScript.
 
-**2. Kemudahan dalam Pengembangan**
+**- Kemudahan dalam Pengembangan**
+
    Dalam banyak kasus, terutama saat mengembangkan aplikasi dengan banyak interaksi AJAX, menggunakan `csrf_exempt` dapat menyederhanakan proses pengembangan. Pengembang tidak perlu khawatir tentang pengaturan token CSRF untuk setiap permintaan POST yang dilakukan melalui AJAX.
 
-**3. Fleksibilitas**
+**- Fleksibilitas**
+
    Dengan menandai view tertentu sebagai exempt dari pemeriksaan CSRF, kita memberikan fleksibilitas dalam menangani permintaan yang mungkin tidak memerlukan perlindungan CSRF, seperti permintaan dari API yang diakses oleh klien tepercaya.
 
-**Apa Yang Terjadi Jika Tidak Menggunakan `csrf_exempt`**
+**Apa Yang Terjadi Jika Tidak Menggunakan `csrf_exempt` :**
 
-**1. Erro 403 Forbidden**
+**- Error 403 Forbidden**
+
    Jika kita tidak menggunakan `csrf_exempt` dan juga tidak mengirimkan token CSRF dengan benar dalam permintaan AJAX, server akan menolak permintaan tersebut dan mengembalikan error 403 Forbidden. Ini terjadi karena Django secara otomatis memeriksa keberadaan token CSRF untuk semua permintaan POST.
 
-**2. Kerumitan Penanganan Token** 
+**- Kerumitan Penanganan Token** 
+
    Tanpa `csrf_exempt`, kita harus memastikan bahwa setiap permintaan AJAX menyertakan token CSRF yang valid. Ini bisa menjadi rumit, terutama jika ada banyak permintaan AJAX yang dilakukan dari sisi klien dan setiap permintaan harus menangani token dengan cara yang benar.
 
-**3. Potensi Kerentanan Keamanan**  
+**- Potensi Kerentanan Keamanan**  
+
    Jika kita mengabaikan perlindungan CSRF pada view yang seharusnya dilindungi, tanpa menggunakan `csrf_exempt`, maka kita berisiko membuka celah keamanan di aplikasi kita. Namun, jika kita menggunakan `csrf_exempt` pada view yang seharusnya tetap aman, maka ini juga dapat menyebabkan kerentanan terhadap serangan CSRF.
 
 Penggunaan dekorator `csrf_exempt` pada view untuk AJAX POST merupakan langkah strategis untuk memastikan bahwa aplikasi dapat berfungsi dengan baik tanpa mengorbankan keamanan, selama penggunaannya dilakukan dengan hati-hati dan hanya pada view yang memang tidak memerlukan perlindungan CSRF.
 
-
 **4. Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?**
 
-**1. Keamanan Data**
-- **Melawan Serangan Cross-Site Scripting (XSS)**: Jika pembersihan data dilakukan di frontend, maka data yang tidak bersih dapat dieksploitasi oleh serangan XSS. Oleh karena itu, melakukan pembersihan di backend membantu melindungi data dari serangan ini.
-- **Menyaring Masukan Malicious**: Di backend, kita dapat lebih efektif dalam menyaring masukan malicious yang mungkin dicoba oleh pengguna untuk merugikan aplikasi.
+**a. Keamanan Data**
 
-**2. Stabilitas Sistem**
-- **Menghindari Ketergantungan Browser**: Jika pembersihan dilakukan di browser, maka kinerja aplikasi dapat dipengaruhi oleh varietas browser yang berbeda-beda. Di backend, kita dapat memastikan bahwa pembersihan dilakukan secara konsisten tanpa ketergantungan pada teknologi front-end.
-- **Otomatisasi Prosess**: Backend memungkinkan kita untuk membuat proses pembersihan data menjadi otomatis, sehingga tidak perlu repot-repot melakukan manual check-up setiap kali user input.
+  **- Melawan Serangan Cross-Site Scripting (XSS)**: 
+  Jika pembersihan data dilakukan di frontend, maka data yang tidak bersih dapat dieksploitasi oleh serangan XSS. Oleh karena itu, melakukan pembersihan di backend membantu melindungi data dari serangan ini.
+  
+  **- Menyaring Masukan Malicious**: 
+  Di backend, kita dapat lebih efektif dalam menyaring masukan malicious yang mungkin dicoba oleh pengguna untuk merugikan aplikasi.
 
-**3. Skalabilitas dan Integrasi**
-- **Scalability**: Saat aplikasi berkembang, backend lebih mudah skalabel dibandingkan dengan frontend. Artinya, kita dapat menambahkan lebih banyak resources untuk memproses data tanpa mempengaruhi performance aplikasi secara signifikan.
-- **Integration with Other Services**: Backend seringkali berintegrasi dengan services lain seperti databases, APIs, dll., sehingga melakukan pembersihan di sana memungkinkan integrasi yang lebih baik dan koheren.
+**b. Stabilitas Sistem**
 
-**4. Transparency dan Audit Trail**
-- **Audit Trail**: Dengan melakukan pembersihan di backend, kita dapat menciptakan trail audit yang lebih transparan tentang apa yang telah dilakukan pada data pengguna. Ini sangat penting untuk tujuan legal dan compliance.
-- **Logging Activity**: Logging activity related to data cleaning can provide valuable insights into how the system handles different types of inputs which helps in improving overall security posture.
+  **- Menghindari Ketergantungan Browser**:
+  Jika pembersihan dilakukan di browser, maka kinerja aplikasi dapat dipengaruhi oleh varietas browser yang berbeda-beda. Di backend, kita dapat memastikan bahwa pembersihan dilakukan secara konsisten tanpa ketergantungan pada teknologi front-end.
+  
+  **- Otomatisasi Prosess**: 
+  Backend memungkinkan kita untuk membuat proses pembersihan data menjadi otomatis, sehingga tidak perlu repot-repot melakukan manual check-up setiap kali user input.
+
+**c. Skalabilitas dan Integrasi**
+
+  **- Scalability**: 
+  Saat aplikasi berkembang, backend lebih mudah skalabel dibandingkan dengan frontend. Artinya, kita dapat menambahkan lebih banyak resources untuk memproses data tanpa mempengaruhi performance aplikasi secara signifikan.
+  
+  **- Integration with Other Services**: 
+  Backend seringkali berintegrasi dengan services lain seperti databases, APIs, dll., sehingga melakukan pembersihan di sana memungkinkan integrasi yang lebih baik dan koheren.
+
+**d. Transparency dan Audit Trail**
+
+  **- Audit Trail**: 
+  Dengan melakukan pembersihan di backend, kita dapat menciptakan trail audit yang lebih transparan tentang apa yang telah dilakukan pada data pengguna. Ini sangat penting untuk tujuan legal dan compliance.
+  
+  **- Logging Activity**: 
+  Logging activity related to data cleaning can provide valuable insights into how the system handles different types of inputs which helps in improving overall security posture.
+
+**5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!**
+
+**Menambahkan Error Message Pada Login**
+- Untuk memudahkan proses login pada aplikasi, berikan conditional pada view login_user
+  ```
+    messages.error(request, msg)
+  ```
+    pesan ini akan "menempelkan" pesan error kepada request yang mengirimkan permintaan login, yang nantinya akan ditampilkan di templat login.html
+
+**Membuat Fungsi untuk Menambahkan Product dengan AJAX**
+
+- Tambahkan kedua import berikut
+   ```
+      from django.views.decorators.csrf import csrf_exempt
+   ```
+   ```
+    from django.views.decorators.http import require_POST pada file views.py
+   ```
+
+- Buat fungsi baru pada views.py dengan nama add_product_entry_ajax yang menerima parameter request
+    ```
+      name = request.POST.get(“name”)
+    ```
+  digunakan untuk mengambil data yang dikirimkan pengguna melalui POST request secara manual.
+    ```
+      new_product = Product(…)
+    ```
+  merupakan objek Product baru yang dibuat secara manual berdasarkan data-data yang dikirimkan dari POST request.
+
+**Menambahkan Routing Untuk Fungsi add_product_entry_ajax**
+
+- Buka urls.py yang ada pada subdirektori main dan impor fungsi yang sudah  dibuat tadi dan tambahkan path url ke dalam urlpatterns
+   untuk mengakses fungsi yang sudah diimpor.
+
+**Menampilkan Data Product Entry dengan fetch() API**
+
+- Pada berkas views.py hapus dua baris berikut:
+    ```
+      product_entries = Product.objects.filter(user=request.user)
+    ```
+    ```
+      'product_entries': product_entries,
+    ```
+Akan didapatkan objek-objek product entry dari endpoint /json, sehingga kode di atas tidak diperlukan lagi.
+
+- Pada berkas views.py dan ubah baris pertama views untuk show_json dan show_xml seperti berikut :
+    ```
+      data = Product.objects.filter(user=request.user)
+    ```
+
+- Pada berkas main.html hapus bagian block conditional product_entries untuk menampilkan card_product ketika kosong
+  atau tidak lalu ditambahkan potongan kode ini di tempat yang sama
+    ```
+      div dengan id=“product_entry_cards"
+    ```
+
+- Buat block script di bagian bawah berkas main.html (sebelum {% endblock content %}) dan buatlah fungsi baru pada block script tersebut dengan nama getProductEntries.
+
+Fungsi ini menggunakan fetch() API ke data JSON secara asynchronous.
+Setelah data di-fetch, fungsi then() digunakan untuk melakukan parse pada data JSON menjadi objek JavaScript.
+
+- Buatlah fungsi baru pada block script dengan nama refreshProductEntries yang digunakan untuk me-refresh data products secara asinkronus.
+    ```
+      document.getElementById(“product_entry_cards")
+    ```
+digunakan untuk mendapatkan elemen berdasarkan ID nya. Pada baris kode ini, elemen yang dituju adalah tag dengan ID product_entry_cards yang sudah kamu buat pada tahapan sebelumnya.
+    ```
+      innerHTML
+    ```
+digunakan untuk mengisi child element dari elemen yang dituju. Jika innerHTML = "", maka akan mengosongkan isi child element dari elemen yang dituju.
+    ```
+      className
+    ```
+digunakan untuk mengisi class name dari elemen yang dituju.
+    ```
+      productEntries.forEach((item))
+    ```
+digunakan untuk melakukan for each loop pada data moods yang diambil menggunakan fungsi getProductEntries(). Kemudian, htmlString kita konkatenasi dengan data moods untuk   mengisi container dengan cards seperti pada tutorial sebelumnya.
+    ```
+      refreshProductEntries()
+    ```
+digunakan untuk memanggil fungsi tersebut pada setiap kali membuka halaman web.
+
+**Membuat Modal Sebagai Form untuk Menambahkan Product**
+
+- Tambahkan kode form untuk mengimplementasikan modal (Tailwind) pada aplikasi. Potongan kode form diletakan di bawah div dengan id product_entry_cards yang telah ditambahkan sebelumnya.
+
+- Agar modal dapat berfungsi, perlu ditambahkan fungsi-fungsi JavaScript berikut.
+    ```
+      function showModal()
+    ```
+    ```
+      function hideModal()
+    ```
+- Tambahkan tombol baru untuk melakukan penambahan data dengan AJAX.
+
+**Menambahkan Data Product dengan AJAX**
+
+Modal dengan form yang telah dibuat sebelumnya belum bisa digunakan untuk menambahkan data product. Oleh karena itu, perlu dibuat fungsi JavaScript baru untuk menambahkan data berdasarkan input ke basis data secara AJAX.
+
+- Buat fungsi baru pada block script dengan nama addProductEntry
+    ```
+      new FormData(document.querySelector(‘#productEntryForm'))
+    ```
+digunakan untuk membuat sebuah FormData baru yang datanya diambil dari form pada modal. Objek FormData dapat digunakan untuk mengirimkan data form tersebut ke server.
+    ```
+      document.getElementById(“productEntryForm").reset()
+    ```
+digunakan untuk mengosongkan isi field form modal setelah di-submit.
+    
+- Tambahkan sebuah event listener pada form yang ada di modal untuk menjalankan fungsi addProductEntry()
+
+**Melindungi Aplikasi dari Cross Site Scripting (XSS)**
+
+- Menambahkan strip_tags untuk "Membersihkan" Data Baru dengan buka berkas views.py dan forms.py dan tambahkan impor berikut :
+      ```
+        from django.utils.html import strip_tags
+      ```
+- Pada fungsi add_product_entry_ajax di views.py, gunakanlah fungsi strip_tags pada data name dan description dan pairing sebelum data tersebut dimasukkan ke dalam Product
+    
+- Pada class ProductEntryForm di forms.py tambahkan ketiga method berikut :
+    ```
+      clean_name()
+    ```
+    ```
+      clean_description()
+    ```
+    ```
+      clean_pairing()
+    ```
+  
+Method clean_name dan clean_description dan clean_pairing akan dipanggil ketika melakukan form.is_valid(), sehingga dengan menambahkan kedua method tersebut sudah melakukan validasi untuk fungsi create_product dan edit_product.
+
+**Membersihkan Data dengan DOMPurify**
+
+    Bisa menggunakan library JavaScript DOMPurify untuk melakukan pembersihan di frontend.
+    
+- Buka berkas main.html dan tambahkan potongan kode berikut pada block meta dalam block script
+    ```
+      src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js">
+    ```
+    
+- Pada fungsi refreshProductEntries yang telah ditambahkan sebelumnya, tambahkan potongan kode berikut.
+    ```
+      const name = DOMPurify.sanitize(item.fields.name);
+    ```
+    ```
+      const description = DOMPurify.sanitize(item.fields.description);
+    ```
+    ```
+      const pairing = DOMPurify.sanitize(item.fields.pairing);
+    ```
+    
+- Refresh halaman utama dan jika sebelumnya memiliki data yang "kotor" seperti yang memunculkan alert box, seharusnya tidak muncul lagi.
+    
 
 
